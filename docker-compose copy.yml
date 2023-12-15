@@ -1,0 +1,17 @@
+version: '3'
+services:
+  java-srv:
+    build: java-srv
+    command: sh -c "/wait && sleep 5 && mvn clean compile exec:java"
+    environment:
+      - DGRAPH_HOST=db
+      - DGRAPH_PORT=${PORT}
+      - WAIT_HOSTS=db:${PORT}
+      - WAIT_HOSTS_TIMEOUT=300
+      - WAIT_SLEEP_INTERVAL=30
+      - WAIT_HOST_CONNECT_TIMEOUT=30
+
+  db:
+    image: dgraph/standalone
+    ports:
+      - ${PORT}
